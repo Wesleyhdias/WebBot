@@ -17,7 +17,14 @@ sleep(0.1)
 web.find_element(By.XPATH, '//*[@id="layout-sidenav"]/ul/li[2]/ul/li[1]').click()
 sleep(0.5)
 
-#descobrir um jeito de separar as informações em variaveis para manipular livremente
+
 tabela_completa = web.find_element(By.XPATH, '//*[@id="table-notas"]')
+thead1 = web.find_element(By.XPATH, '//*[@id="table-notas"]/thead/tr[1]')
+thead2 = web.find_element(By.XPATH, '//*[@id="table-notas"]/thead/tr[2]')
+tbody = web.find_element(By.XPATH, '//*[@id="table-notas"]/tbody')
+
 sleep(0.5)
-print(tabela_completa.text)
+
+print(f'tabela completa\n{tabela_completa.text}\n\nthead1:\n{thead1.text}\n\nthead2:\n{thead2.text}\n\nbody:\n{tbody.text}')
+
+# arrumar um jeito de organizar os valores tirados do site de forma que facilite a manipulação, tentar usar listas e dicionarios.
