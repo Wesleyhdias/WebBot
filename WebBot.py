@@ -15,5 +15,9 @@ web.find_element(By.ID, 'btn-login').click()
 web.find_element(By.XPATH, '//*[@id="layout-sidenav"]/ul/li[2]/a').click()
 sleep(0.1)
 web.find_element(By.XPATH, '//*[@id="layout-sidenav"]/ul/li[2]/ul/li[1]').click()
+sleep(0.5)
 
-sleep(5)
+#descobrir um jeito de separar as informações em variaveis para manipular livremente
+tabela_completa = web.find_element(By.XPATH, '//*[@id="table-notas"]')
+sleep(0.5)
+print(tabela_completa.text)
