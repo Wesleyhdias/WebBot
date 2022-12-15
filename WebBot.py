@@ -64,5 +64,3 @@ sleep(0.5)
 thead1 = lista_texto(web, '//*[@id="table-notas"]/thead/tr[1]/th[1]')
 thead2 = lista_texto(web, '//*[@id="table-notas"]/thead/tr[2]/th[1]')
 body = listas_texto(web, '//*[@id="table-notas"]/tbody/tr[1]/td[1]')
-
-print(body)
