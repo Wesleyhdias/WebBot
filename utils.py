@@ -48,22 +48,23 @@ def listas_texto(site, caminho, mserach='XPATH'):
     return lista
 
 
-service = Service(ChromeDriverManager().install())
-web = webdriver.Chrome(service=service)
+def pegar_notas(site, login, senha):
+    service = Service(ChromeDriverManager().install())
+    web = webdriver.Chrome(service=service)
 
-web.get("https://feitep.jacad.com.br/academico/aluno-v2/login")
-web.find_element(By.ID, 'login').send_keys('4245')
-web.find_element(By.ID, 'senha').send_keys('09052004')
-web.find_element(By.ID, 'btn-login').click()
-web.find_element(By.XPATH, '//*[@id="layout-sidenav"]/ul/li[2]/a').click()
-sleep(0.2)
-web.find_element(By.XPATH, '//*[@id="layout-sidenav"]/ul/li[2]/ul/li[1]').click()
-sleep(0.5)
+    web.get("site")
+    web.find_element(By.ID, 'login').send_keys(login)
+    web.find_element(By.ID, 'senha').send_keys(senha)
+    web.find_element(By.ID, 'btn-login').click()
+    web.find_element(By.XPATH, '//*[@id="layout-sidenav"]/ul/li[2]/a').click()
+    sleep(0.2)
+    web.find_element(By.XPATH, '//*[@id="layout-sidenav"]/ul/li[2]/ul/li[1]').click()
+    sleep(0.5)
 
-thead1 = lista_texto(web, '//*[@id="table-notas"]/thead/tr[1]/th[1]')
-thead2 = lista_texto(web, '//*[@id="table-notas"]/thead/tr[2]/th[1]')
-body = listas_texto(web, '//*[@id="table-notas"]/tbody/tr[1]/td[1]')
+    thead1 = lista_texto(web, '//*[@id="table-notas"]/thead/tr[1]/th[1]')
+    thead2 = lista_texto(web, '//*[@id="table-notas"]/thead/tr[2]/th[1]')
+    body = listas_texto(web, '//*[@id="table-notas"]/tbody/tr[1]/td[1]')
 
-print(f'{thead1}\n\n{thead2}\n\n{body}')
 
 # não tem mais notas no site :/
+# vai ficar travado aqui um tempo.
