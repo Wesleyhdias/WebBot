@@ -1,3 +1,4 @@
+import utils
 import discord
 from discord.ext import commands, tasks
 from discord.flags import Intents
@@ -8,7 +9,7 @@ bot = commands.Bot(command_prefix = "/", intents = intents)
 @bot.event
 async def on_ready():
     print(f'acordei!\nconectado como: {bot.user}')
-    remenber.start()	
+    # remenber.start()	
 
 @bot.event
 async def on_message(message):
@@ -22,6 +23,17 @@ async def say_hi(ctx):
     
     username = ctx.author.name
     await ctx.send(f'olá {username}!')
+    
+    
+@bot.command(name = 'notas') 
+async def get_grade(ctx, site, login, password):
+    
+    # ainda tem cois para arrumar aqui
+    msg = utils.get_grades(site, login, password)
+    await ctx.send(f'aqui estão suas notas até o momento:\n\n')
+    for k in msg:
+        await ctx.send(f'{msg[k]}')
+
 
 # ainda não tenho o porque usar algo assim, mas tá aqui no caso algum dia precisar
 @tasks.loop(seconds = 20) 
@@ -31,4 +43,4 @@ async def remenber():
     await channel.send('eu ainda estou aqui!')
 
 
-bot.run('MTA1NTQ3ODk5NjM1NzM2MTcyNg.Gd0VNq.tXYG9m-nn8eSqyvt4CL4KyHRoCgHc5Kpt_4GQE')
+bot.run('TOKEN')

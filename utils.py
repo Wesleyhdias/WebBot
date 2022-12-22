@@ -13,7 +13,7 @@ def muda_xpath(xpath, oldstr, newstr, place=-1):
     return xpath
 
 
-def lista_texto(site, caminho, mserach='XPATH'):
+def txt_list(site, caminho, mserach='XPATH'):
     
     lista = []
     c = 1
@@ -33,11 +33,11 @@ def lista_texto(site, caminho, mserach='XPATH'):
     return lista
 
 
-def listas_texto(site, caminho, mserach='XPATH'):
+def txt_lists(site, caminho, mserach='XPATH'):
     lista = []
     c = 1
     while True:
-        v = lista_texto(site, caminho)
+        v = txt_list(site, caminho)
         if len(v) != 0:
             lista.append(v)
             caminho = muda_xpath(caminho, c, c+1, place = -2)
@@ -48,11 +48,11 @@ def listas_texto(site, caminho, mserach='XPATH'):
     return lista
 
 
-def pegar_notas(site, login, senha):
+def get_grades(site, login, senha):
     service = Service(ChromeDriverManager().install())
     web = webdriver.Chrome(service=service)
 
-    web.get("site")
+    web.get(site)
     web.find_element(By.ID, 'login').send_keys(login)
     web.find_element(By.ID, 'senha').send_keys(senha)
     web.find_element(By.ID, 'btn-login').click()
@@ -61,9 +61,15 @@ def pegar_notas(site, login, senha):
     web.find_element(By.XPATH, '//*[@id="layout-sidenav"]/ul/li[2]/ul/li[1]').click()
     sleep(0.5)
 
-    thead1 = lista_texto(web, '//*[@id="table-notas"]/thead/tr[1]/th[1]')
-    thead2 = lista_texto(web, '//*[@id="table-notas"]/thead/tr[2]/th[1]')
-    body = listas_texto(web, '//*[@id="table-notas"]/tbody/tr[1]/td[1]')
+    thead1 = txt_list(web, '//*[@id="table-notas"]/thead/tr[1]/th[1]')
+    thead2 = txt_list(web, '//*[@id="table-notas"]/thead/tr[2]/th[1]')
+    body = txt_lists(web, '//*[@id="table-notas"]/tbody/tr[1]/td[1]')
+    
+    # quando tiver notas no site contruir uma tabela com elas e dar como o valor de retirno dessa função
+    tabela = {'thead1': thead1, 'thead2': thead2, 'body': body}
+    
+    return tabela
+    
 
 
 # não tem mais notas no site :/
