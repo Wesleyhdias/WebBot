@@ -79,7 +79,7 @@ def get_grades(site, login, senha):
     if body or thead1 or thead2 == 'nenhum elemento encontrado':
         return body
     else:
-        # quando tiver notas no site contruir uma tabela com elas e dar como o valor de retirno dessa função
+        # quando tiver notas no site contruir uma tabela com elas e dar como o valor de retorno dessa função
         tabela = {'thead1': thead1, 'thead2': thead2, 'body': body}
     
         return tabela
