@@ -17,25 +17,28 @@ async def on_message(message):
         return
 
     await bot.process_commands(message)
-
-@bot.command(name = 'oi') 
-async def say_hi(ctx):
-    
-    username = ctx.author.name
-    await ctx.send(f'olá {username}!')
     
     
 @bot.command(name = 'notas') 
 async def get_grade(ctx, site, login, password):
     
-    # ainda tem cois para arrumar aqui
-    msg = utils.get_grades(site, login, password)
-    await ctx.send(f'aqui estão suas notas até o momento:\n\n')
-    for k in msg:
-        await ctx.send(f'{msg[k]}')
+    # ainda tem coisas para arrumar aqui, muitas coisas
+    try:
+        msg = utils.get_grades(site, login, password)
+        if msg == 'nenhum elemento encontrado':
+            await ctx.author.send('não encontrei nenhuma nota')
+        else:
+            await ctx.author.send(f'aqui estão suas notas até o momento:\n\n')
+            for k in msg:
+                await ctx.author.send(f'{msg[k]}')
+    except discord.errors.Forbidden:
+        if msg == 'nenhum elemento encontrado':
+            ctx.send('não encontrei nenhuma nota')
+        else:
+            await ctx.send('Não posso enviar menssagens no seu privrado!\ncaso queira receber habilite a opção para receber mensagens de qualquer pessoa.')
+    
 
-
-# ainda não tenho o porque usar algo assim, mas tá aqui no caso algum dia precisar
+# ainda não tenho o porque usar algo assim, mas tá aqui no caso de algum dia precisar
 @tasks.loop(seconds = 20) 
 async def remenber():
     channel = bot.get_channel(951921333128790039)

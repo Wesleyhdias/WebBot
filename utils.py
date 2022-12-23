@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException
 from time import sleep
 
 
@@ -20,17 +20,26 @@ def txt_list(site, caminho, mserach='XPATH'):
     while True:
         try:
             v = site.find_element(By.XPATH, caminho)
+            lista.append(v.text)
         except NoSuchElementException:
+            if len(lista) == 0:
+                print("esse caminho não possui nenhum elemento...")
+                break
+            else:
+                break
+        except NoSuchWindowException:
+            print(lista, len(lista))
             break
         except Exception as erro:
             print(f'tivemos um erro ainda não tratado\naqui está o erro\n\n{erro.__class__}\n')
             break
         else:
             caminho = muda_xpath(caminho, c, c+1)
-            lista.append(v.text)
             c += 1
-
-    return lista
+    if len(lista) == 0:
+        return 'nenhum elemento encontrado'
+    else:
+        return lista
 
 
 def txt_lists(site, caminho, mserach='XPATH'):
@@ -38,14 +47,16 @@ def txt_lists(site, caminho, mserach='XPATH'):
     c = 1
     while True:
         v = txt_list(site, caminho)
-        if len(v) != 0:
+        if v == 'nenhum elemento encontrado':
+            break
+        elif len(v) != 0:
             lista.append(v)
             caminho = muda_xpath(caminho, c, c+1, place = -2)
             c += 1
-        else:
-            break
-        
-    return lista
+    if v == 'nenhum elemento encontrado':
+        return v
+    else:
+        return lista
 
 
 def get_grades(site, login, senha):
@@ -65,10 +76,13 @@ def get_grades(site, login, senha):
     thead2 = txt_list(web, '//*[@id="table-notas"]/thead/tr[2]/th[1]')
     body = txt_lists(web, '//*[@id="table-notas"]/tbody/tr[1]/td[1]')
     
-    # quando tiver notas no site contruir uma tabela com elas e dar como o valor de retirno dessa função
-    tabela = {'thead1': thead1, 'thead2': thead2, 'body': body}
+    if body or thead1 or thead2 == 'nenhum elemento encontrado':
+        return body
+    else:
+        # quando tiver notas no site contruir uma tabela com elas e dar como o valor de retirno dessa função
+        tabela = {'thead1': thead1, 'thead2': thead2, 'body': body}
     
-    return tabela
+        return tabela
     
 
 
