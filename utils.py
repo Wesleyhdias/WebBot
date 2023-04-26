@@ -15,6 +15,8 @@ def muda_xpath(xpath, oldstr, newstr, place=-1):
 
 def txt_list(site, caminho, mserach='XPATH'):
     
+    global res
+    res = ''
     lista = []
     c = 1
     while True:
@@ -22,13 +24,16 @@ def txt_list(site, caminho, mserach='XPATH'):
             v = site.find_element(By.XPATH, caminho)
             lista.append(v.text)
         except NoSuchElementException:
-            if len(lista) == 0:
-                print("esse caminho não possui nenhum elemento...")
+            if len(lista) != 0:
+                res = 'encontrei respostas'
                 break
             else:
+                res = 'nada encontrado'
                 break
         except NoSuchWindowException:
             print(lista, len(lista))
+            break
+        except AttributeError:
             break
         except Exception as erro:
             print(f'tivemos um erro ainda não tratado\naqui está o erro\n\n{erro.__class__}\n')
@@ -36,27 +41,25 @@ def txt_list(site, caminho, mserach='XPATH'):
         else:
             caminho = muda_xpath(caminho, c, c+1)
             c += 1
-    if len(lista) == 0:
-        return 'nenhum elemento encontrado'
-    else:
+    if res == 'encontrei respostas':
         return lista
-
+    else:
+        return False
 
 def txt_lists(site, caminho, mserach='XPATH'):
+    global res
     lista = []
     c = 1
     while True:
         v = txt_list(site, caminho)
-        if v == 'nenhum elemento encontrado':
-            break
-        elif len(v) != 0:
+        if v == False and len(lista) == 0:
+            return False
+        elif v == False and len(lista) != 0:
+            return lista
+        else:
             lista.append(v)
             caminho = muda_xpath(caminho, c, c+1, place = -2)
             c += 1
-    if v == 'nenhum elemento encontrado':
-        return v
-    else:
-        return lista
 
 
 def get_grades(site, login, senha):
@@ -76,15 +79,7 @@ def get_grades(site, login, senha):
     thead2 = txt_list(web, '//*[@id="table-notas"]/thead/tr[2]/th[1]')
     body = txt_lists(web, '//*[@id="table-notas"]/tbody/tr[1]/td[1]')
     
-    if body or thead1 or thead2 == 'nenhum elemento encontrado':
-        return body
-    else:
-        # quando tiver notas no site contruir uma tabela com elas e dar como o valor de retorno dessa função
-        tabela = {'thead1': thead1, 'thead2': thead2, 'body': body}
-    
-        return tabela
-    
 
-
-# não tem mais notas no site :/
-# vai ficar travado aqui um tempo.
+    tabela = {'thead1': thead1, 'thead2': thead2, 'body': body}
+    
+    return tabela

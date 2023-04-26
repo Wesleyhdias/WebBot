@@ -25,8 +25,9 @@ async def get_grade(ctx, site, login, password):
     # ainda tem coisas para arrumar aqui, muitas coisas
     try:
         msg = utils.get_grades(site, login, password)
-        if msg == 'nenhum elemento encontrado':
+        if msg == False:
             await ctx.author.send('não encontrei nenhuma nota')
+            await ctx.author.send('mas não se preocupe, os professores podem simplesmente não ter postado ainda, pesquise outra vez mais tarte, ou fale diretamente com algum professor')
         else:
             await ctx.author.send(f'aqui estão suas notas até o momento:\n\n')
             for k in msg:
