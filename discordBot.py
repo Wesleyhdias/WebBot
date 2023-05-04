@@ -17,14 +17,13 @@ async def on_message(message):
         return
 
     await bot.process_commands(message)
-    
-    
+
+
 @bot.command(name = 'notas') 
 async def get_grade(ctx, site, login, password):
     
     # ainda tem coisas para arrumar aqui, muitas coisas
     try:
-<<<<<<< HEAD
         notas = utils.get_grades(site, login, password, toStr=True)
         if notas == False:
             await ctx.author.send('não encontrei nenhuma nota')
@@ -43,25 +42,13 @@ async def get_grade(ctx, site, login, password):
             embed.add_field(name = 'Trabalho B2', value = notas[5])
             embed.add_field(name = 'Substitutiva B2', value = notas[6])
             
-=======
-        msg = utils.get_grades(site, login, password)
-        if msg == False:
-            await ctx.author.send('não encontrei nenhuma nota')
-            await ctx.author.send('mas não se preocupe, os professores podem simplesmente não ter postado ainda, pesquise outra vez mais tarte, ou fale diretamente com algum professor')
-        else:
->>>>>>> parent of 867cc73 (primeiro prototipo de tabela)
             await ctx.author.send(f'aqui estão suas notas até o momento:\n\n')
-            for k in msg:
-                await ctx.author.send(f'{msg[k]}')
+            await ctx.send(embed=embed)
+                           
     except discord.errors.Forbidden:
-<<<<<<< HEAD
         if notas == False:
             await ctx.send('não encontrei nenhuma nota')
             await ctx.author.send('mas não se preocupe, os professores podem simplesmente não ter postado ainda, pesquise outra vez mais tarte, ou fale diretamente com algum professor')
-=======
-        if msg == 'nenhum elemento encontrado':
-            ctx.send('não encontrei nenhuma nota')
->>>>>>> parent of 867cc73 (primeiro prototipo de tabela)
         else:
             await ctx.send('Não posso enviar menssagens no seu privrado!\ncaso queira receber habilite a opção para receber mensagens de qualquer pessoa.')
     
@@ -73,9 +60,4 @@ async def remenber():
     
     await channel.send('eu ainda estou aqui!')
 
-
-bot.run('TOKEN')
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 867cc73 (primeiro prototipo de tabela)
+bot.run('Token')
