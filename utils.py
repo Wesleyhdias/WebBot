@@ -62,7 +62,14 @@ def txt_lists(site, caminho, mserach='XPATH'):
             c += 1
 
 
+<<<<<<< HEAD
+def get_grades(site, login, senha, toStr):
+    options = Options()
+    options.headless = False
+        
+=======
 def get_grades(site, login, senha):
+>>>>>>> parent of 867cc73 (primeiro prototipo de tabela)
     service = Service(ChromeDriverManager().install())
     web = webdriver.Chrome(service=service)
 
@@ -80,6 +87,25 @@ def get_grades(site, login, senha):
     body = txt_lists(web, '//*[@id="table-notas"]/tbody/tr[1]/td[1]')
     
 
+<<<<<<< HEAD
+    for c in body:
+        if len(c) >= 2:
+            materias.append(c[1])
+            provaB1.append(c[2])
+            trabB1.append(c[3])
+            subB1.append(c[5])
+            provaB2.append(c[6])
+            trabB2.append(c[7])
+            subB2.append(c[8])
+    
+    tabela = [materias, provaB1, trabB1, subB1, provaB2, trabB2, subB2]
+    
+    if toStr == True:
+        for k, v in enumerate(tabela):
+            v = '\n'.join(v)
+            tabela[k] = v
+=======
     tabela = {'thead1': thead1, 'thead2': thead2, 'body': body}
+>>>>>>> parent of 867cc73 (primeiro prototipo de tabela)
     
     return tabela
