@@ -1,11 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome import options
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager 
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException
 from time import sleep
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 
 
 def muda_xpath(xpath, oldstr, newstr, place=-1):
@@ -65,11 +64,8 @@ def txt_lists(site, caminho, mserach='XPATH'):
 
 
 def get_grades(site, login, senha, toStr):
-    options = Options()
-    options.headless = False
         
-    service = Service(ChromeDriverManager().install())
-    web = webdriver.Chrome(service=service, options=options)
+    web = webdriver.Chrome()
 
     web.get(site)
     web.find_element(By.ID, 'login').send_keys(login)
@@ -108,3 +104,8 @@ def get_grades(site, login, senha, toStr):
             tabela[k] = v
     
     return tabela
+
+
+
+def drawText():
+    pass
