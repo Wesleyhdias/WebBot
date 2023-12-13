@@ -52,4 +52,4 @@ async def remenber():
     
     await channel.send('eu ainda estou aqui!')
 
-bot.run('MTA1NTQ3ODk5NjM1NzM2MTcyNg.G_c4JD.lATe-AEUyPbL7Q1uPHhD755KM2gPIhnlZbJ46w')
+bot.run('token')
