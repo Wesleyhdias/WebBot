@@ -1,10 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from PIL import Image, ImageDraw, ImageFont
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException
 from time import sleep
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageFont
+import os
 
 
 def muda_xpath(xpath, oldstr, newstr, place=-1):
@@ -84,6 +83,8 @@ def get_grades(site, login, senha, toStr):
     subB2 = []
     trabB1 = []
     trabB2 = []
+    medB1 = []
+    medB2 = []
     materias = []
 
     for c in body:
@@ -91,12 +92,14 @@ def get_grades(site, login, senha, toStr):
             materias.append(c[1])
             provaB1.append(c[2])
             trabB1.append(c[3])
-            subB1.append(c[5])
+            subB1.append(c[4])
+            medB1.append(c[5])
             provaB2.append(c[6])
             trabB2.append(c[7])
             subB2.append(c[8])
+            medB2.append(c[9])
     
-    tabela = [materias, provaB1, trabB1, subB1, provaB2, trabB2, subB2]
+    tabela = [materias, provaB1, trabB1, subB1, medB1, provaB2, trabB2, subB2, medB2]
     
     if toStr == True:
         for k, v in enumerate(tabela):
@@ -106,6 +109,39 @@ def get_grades(site, login, senha, toStr):
     return tabela
 
 
+def drawText(matriz):
+    
+    
+    for i, c in enumerate(matriz[0]):
+        if len(c) >= 20:
+            p2 = []
+            c = c.split(' ')
+            if len(c[0] + ' ' + c[1]) >= 15:
+                p1 = c[0] + ' ' + c[1]
+                for j in range(2, len(c)):
+                    p2.append(c[j])
+                p2 = ' '.join(p2) 
+            else:
+                p1 = c[0] + ' ' + c[1] + ' ' + c[2]
+                for j in range(3, len(c)):
+                    p2.append(c[j])
+                p2 = ' '.join(p2) 
+            matriz[0][i] = p1 + '\n' + p2
+                
 
-def drawText():
-    pass
+    defalt_dir = os.path.dirname(__file__)
+    gradeSheet_dir = os.path.join(defalt_dir, "gradeSheet.png")	
+
+    font = ImageFont.truetype('MONOCRAFT.OTF', 33)
+
+    img = Image.open(gradeSheet_dir)
+    drawImg = ImageDraw.Draw(img)
+
+    for i, colun in enumerate(matriz):
+        for j, lin in enumerate(colun):
+            if i == 0:
+                drawImg.text((175, 430+(j*88)), lin, (0, 0, 0), font=font, anchor="la")
+            else:
+                drawImg.text((610+(i*175), 452+(j*88)), lin, (0, 0, 0), font=font, anchor="la")
+
+    img.save('notas.png')

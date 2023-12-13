@@ -1,9 +1,9 @@
 import utils
 import discord
 from discord.ext import commands, tasks
-from discord.flags import Intents
 
-intents = discord.Intents.all()
+intents = discord.Intents.default()
+intents.message_content = True
 bot = commands.Bot(command_prefix = "?", intents = intents)
 
 @bot.event
@@ -24,26 +24,18 @@ async def get_grade(ctx, site, login, password):
     
     # ainda tem coisas para arrumar aqui, muitas coisas
     try:
-        notas = utils.get_grades(site, login, password, toStr=True)
-        if notas == False:
-            await ctx.author.send('não encontrei nenhuma nota')
-            await ctx.author.send('mas não se preocupe, os professores podem simplesmente não ter postado ainda, pesquise outra vez mais tarte, ou fale diretamente com algum professor')
-        else:
-            embed = discord.Embed(
-                title = "Tabela de notas",
-                description= "Podem haver erros ou mudanças nas notas",
-                color = 0x0000FF)
-            # precisa ficar um pouco mais apresentavel
-            embed.add_field(name = 'Matérias', value = f'{notas[0]}')
-            embed.add_field(name = 'Prova B1', value = notas[1])
-            embed.add_field(name = 'Trabalho B1', value = notas[2])
-            embed.add_field(name = 'Substitutiva B1', value = notas[3])
-            embed.add_field(name = 'Prova B2', value = notas[4])
-            embed.add_field(name = 'Trabalho B2', value = notas[5])
-            embed.add_field(name = 'Substitutiva B2', value = notas[6])
-            
-            await ctx.author.send(f'aqui estão suas notas até o momento:\n\n')
-            await ctx.send(embed=embed)
+        notas = utils.get_grades(site, login, password, toStr=False)
+        utils.drawText(notas)
+        
+        embed = discord.Embed(
+            title = "Tabela de notas",
+            description= "Podem haver erros ou mudanças nas notas",
+            color = 0x0000FF)
+        file = discord.File('notas.png', filename = 'image.png')
+        embed.set_image(url='attachment://image.png')
+        
+        await ctx.author.send(f'aqui estão suas notas até o momento:\n\n')
+        await ctx.send(file=file, embed=embed)
                            
     except discord.errors.Forbidden:
         if notas == False:
@@ -60,4 +52,4 @@ async def remenber():
     
     await channel.send('eu ainda estou aqui!')
 
-bot.run('MTA1NTQ3ODk5NjM1NzM2MTcyNg.G4vsgE.VuxzYV7vifO24NaFhpTl537izmP6NqQMqSftNI')
+bot.run('MTA1NTQ3ODk5NjM1NzM2MTcyNg.G_c4JD.lATe-AEUyPbL7Q1uPHhD755KM2gPIhnlZbJ46w')
